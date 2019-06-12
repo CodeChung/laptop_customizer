@@ -1,6 +1,6 @@
 import React from 'react';
 
-class Summary extends React.Component {
+class SummaryList extends React.Component {
     static defaultProps = {
         name: '',
         selected: {}
@@ -21,4 +21,4 @@ class Summary extends React.Component {
     }
 }
 
-export default Summary;
+export default SummaryList;
