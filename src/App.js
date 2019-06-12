@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import Summary from './components/Summary';
+import Features from './components/Features';
 import './App.css';
+import Options from './components/Options';
 
 class App extends Component {
   constructor(props){
@@ -36,14 +39,7 @@ class App extends Component {
 
   render() {
     const summary = Object.keys(this.state.selected)
-          .map(key => <div className="summary__option" key={key}>
-            <div className="summary__option__label">{key}  </div>
-            <div className="summary__option__value">{this.state.selected[key].name}</div>
-            <div className="summary__option__cost">
-              { new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD'})
-                  .format(this.state.selected[key].cost) }
-            </div>
-        </div>)
+          .map(selectedOption => <Summary key={selectedOption} name={selectedOption} selected={this.state.selected}/>)
 
     const total = Object.keys(this.state.selected)
           .reduce((acc, curr) => acc + this.state.selected[curr].cost, 0);    
@@ -54,23 +50,10 @@ class App extends Component {
             const options = this.props.features[key].map((item, index) => {
               const selectedClass = item.name === this.state.selected[key].name ? 'feature__selected' : '';
               const featureClass = 'feature__option ' + selectedClass;
-              return <li key={index} className="feature__item">
-                <div className={featureClass}
-                  
-                  onClick={e => this.updateFeature(key, item)}>
-                    { item.name }
-                    ({ new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD'})
-                      .format(item.cost) })
-                </div>
-              </li>
+              return <Options key={index} item={item} name={key}  featureClass={featureClass} handleClick={() => this.updateFeature(key, item)}/>
             });
 
-            return <div className="feature" key={key}>
-              <div className="feature__name">{key}</div>
-              <ul className="feature__list">
-                { options }
-              </ul>
-            </div>
+            return <Features key={key} name={key} options={options}/>
           });      
 
     return (
